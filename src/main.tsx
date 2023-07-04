@@ -4,11 +4,14 @@ import App from './App.tsx'
 import './index.css'
 import { Provider } from 'react-redux'
 import { store } from './app/store.ts'
+import { CookiesProvider } from 'react-cookie'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <CookiesProvider>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </CookiesProvider>
   </React.StrictMode>,
 )

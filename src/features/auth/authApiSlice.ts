@@ -6,8 +6,30 @@ export const authApiSlice = apiSlice.injectEndpoints({
     login: builder.mutation({
       query: credentials => ({
         url: '/login/',
+        credentials: 'include',
         method: 'POST',
         body: { ...credentials }
+      })
+    }),
+    registerUser: builder.mutation({
+      query: (data: { user_id: string, password: string, name: string, phone: string, email: string }) => ({
+        url: '/register/',
+        method: 'POST',
+        body: data
+      })
+    }),
+    verifyToken: builder.mutation({
+      query: (token: string) => ({
+        url: '/token/verify/',
+        method: 'POST',
+        body: { 'token': token }
+      })
+    }),
+    refreshToken: builder.mutation({
+      query: (token: string) => ({
+        url: '/token/refresh/',
+        method: 'POST',
+        body: { 'refresh': token }
       })
     }),
     sendLogout: builder.mutation({
@@ -17,27 +39,20 @@ export const authApiSlice = apiSlice.injectEndpoints({
       }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
-          //const { data } = 
           await queryFulfilled
-          //console.log(data)
-          // dispatch(logout())
           dispatch(apiSlice.util.resetApiState())
         } catch (err) {
           console.log(err)
         }
       }
     }),
-    refresh: builder.mutation({
-      query: () => ({
-        url: '/token/refresh/',
-        method: 'GET',
-      })
-    }),
   })
 })
 
 export const {
   useLoginMutation,
+  useRegisterUserMutation,
   useSendLogoutMutation,
-  useRefreshMutation,
+  useVerifyTokenMutation,
+  useRefreshTokenMutation,
 } = authApiSlice 
